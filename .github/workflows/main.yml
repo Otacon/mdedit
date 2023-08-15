@@ -10,7 +10,7 @@ jobs:
      - name: Install Snapcraft
        uses: samuelmeuli/action-snapcraft@v2
      - name: Create snap app
-       run: sg lxd -c 'snapcraft --use-lxd'
+       run: snapcraft --use-lxd
      - uses: actions/upload-artifact@v3
        with:
          name: linux
