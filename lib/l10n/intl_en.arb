@@ -1,0 +1,12 @@
+{
+  "app_name": "Markdown Edit",
+  "menu_file": "File",
+  "menu_file_new": "New",
+  "menu_file_open": "Open",
+  "menu_file_save": "Save",
+  "menu_file_save_as": "Save as...",
+  "menu_file_exit": "Exit",
+  "file_picker_new_title": "Create new file",
+  "file_picker_open_title": "Open file",
+  "file_picker_save_as_title": "Save file"
+}
