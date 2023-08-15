@@ -1,0 +1,67 @@
+name: Create binaries
+run-name: Create binaries
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+ build-linux:
+   runs-on: ubuntu-20.04
+   steps:
+     - uses: actions/checkout@v3
+     - uses: whywaita/setup-lxd@v1
+       with:
+         lxd_version: latest/stable
+     - name: Install Snapcraft
+       uses: samuelmeuli/action-snapcraft@v2
+     - name: Create snap app
+       run: snapcraft --use-lxd
+     - uses: actions/upload-artifact@v3
+       with:
+         name: linux
+         path: mdedit*.snap
+ build-windows:
+   runs-on: windows-latest
+   steps:
+     - uses: actions/checkout@v3
+     - uses: subosito/flutter-action@v2
+       with:
+         flutter-version: '3.10.6'
+         channel: 'stable'
+     - run: flutter config --enable-windows-desktop
+     - run: flutter pub get
+     - run: flutter build windows --release
+     - uses: actions/upload-artifact@v3
+       with:
+         name: windows
+         path: build/windows/runner/Release/*
+ build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.6'
+        channel: 'stable'
+        architecture: x64
+    - run: flutter pub get
+    - run: flutter build macos --release
+    - uses: actions/upload-artifact@v3
+      with:
+         name: macos
+         path: build/macos/Build/Products/*
+ build-web:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v3
+     - uses: subosito/flutter-action@v2
+       with:
+         flutter-version: '3.10.6'
+         channel: 'stable'
+     - run: flutter pub get
+     - run: flutter build web
+     - uses: actions/upload-artifact@v3
+       with:
+         name: web
+         path: build/web/*
