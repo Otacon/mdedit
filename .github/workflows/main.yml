@@ -18,6 +18,10 @@ jobs:
      - run: flutter config --enable-linux-desktop
      - run: flutter pub get
      - run: flutter build linux --release
+     - name: Install Snapcraft
+       uses: samuelmeuli/action-snapcraft@v2
+     - name: Create snap app
+       run: snapcraft
      - uses: actions/upload-artifact@v3
        with:
          name: linux
@@ -36,7 +40,7 @@ jobs:
      - uses: actions/upload-artifact@v3
        with:
          name: windows
-         path: build//windows/runner/Release/*
+         path: build/windows/runner/Release/*
  build-macos:
     runs-on: macos-latest
     steps:
@@ -51,7 +55,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
          name: macos
-         path: build/macos/*
+         path: build/macos/Build/Products/*
  build-web:
    runs-on: ubuntu-latest
    steps:
