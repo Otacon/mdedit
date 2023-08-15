@@ -7,6 +7,9 @@ jobs:
    runs-on: ubuntu-latest
    steps:
      - uses: actions/checkout@v3
+     - uses: whywaita/setup-lxd@v1
+       with:
+         lxd_version: latest/stable
      - name: Install Snapcraft
        uses: samuelmeuli/action-snapcraft@v2
      - name: Create snap app
