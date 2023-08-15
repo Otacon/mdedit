@@ -1,5 +1,5 @@
-name: Build Linux
-run-name: Build Linux binary
+name: Create binaries
+run-name: Create binaries
 on: [push]
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
         channel: 'stable'
         architecture: x64
     - run: flutter pub get
-    - run: flutter build macos --release --no-codesign
+    - run: flutter build macos --release
     - uses: actions/upload-artifact@v3
       with:
          name: macos
