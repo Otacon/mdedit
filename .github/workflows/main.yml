@@ -50,7 +50,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
          name: macos
-         path: build/macos/Build/Products/*
+         path: build/macos/Build/Products/mdedit
  build-web:
    runs-on: ubuntu-latest
    steps:
