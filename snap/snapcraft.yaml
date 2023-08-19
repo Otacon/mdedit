@@ -4,7 +4,7 @@ summary: Super Cool App
 description: Super Cool App that does everything!
 
 confinement: strict
-base: core18
+base: core22
 grade: stable
 
 slots:
@@ -16,7 +16,7 @@ slots:
 apps:
   mdedit:
     command: mdedit
-    extensions: [flutter-stable]
+    extensions: [gnome-3-28]
     plugs:
       - network
     slots:
