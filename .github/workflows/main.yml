@@ -1,7 +1,6 @@
 name: Create binaries
 run-name: Create binaries
 on:
-  push:
   pull_request:
     branches:
       - main
