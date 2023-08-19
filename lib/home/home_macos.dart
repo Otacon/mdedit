@@ -7,9 +7,10 @@ import 'package:mdedit/text_editor/text_editor_macos.dart';
 import 'package:split_view/split_view.dart';
 
 class HomeMacos extends Home {
-  const HomeMacos({super.key, required this.title});
+  HomeMacos({super.key, required this.title});
 
   final String title;
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget buildView(
@@ -52,9 +53,10 @@ class HomeMacos extends Home {
                   viewMode: SplitViewMode.Horizontal,
                   children: [
                     TextEditorMacos(
+                      controller: _controller,
                       onTextChanged: viewModel.onTextChanged,
                     ),
-                    Markdown(data: viewModel.text),
+                    Markdown(data: viewModel.previewText),
                   ],
                 );
             },

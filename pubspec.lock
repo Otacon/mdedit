@@ -509,6 +509,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  screen_retriever:
+    dependency: transitive
+    description:
+      name: screen_retriever
+      sha256: "4931f226ca158123ccd765325e9fbf360bfed0af9b460a10f960f9bb13d58323"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   scroll_pos:
     dependency: transitive
     description:
@@ -578,6 +586,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  system_theme:
+    dependency: "direct main"
+    description:
+      name: system_theme
+      sha256: "1f208db140a3d1e1eac2034b54920d95699c1534df576ced44b3312c5de3975f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
+  system_theme_web:
+    dependency: transitive
+    description:
+      name: system_theme_web
+      sha256: "7566f5a928f6d28d7a60c97bea8a851d1c6bc9b86a4df2366230a97458489219"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   term_glyph:
     dependency: transitive
     description:
@@ -634,6 +658,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.6"
+  window_manager:
+    dependency: "direct main"
+    description:
+      name: window_manager
+      sha256: "9eef00e393e7f9308309ce9a8b2398c9ee3ca78b50c96e8b4f9873945693ac88"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.5"
   xdg_directories:
     dependency: transitive
     description:

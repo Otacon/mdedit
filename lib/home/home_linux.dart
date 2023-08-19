@@ -7,9 +7,10 @@ import 'package:mdedit/text_editor/text_editor_linux.dart';
 import 'package:split_view/split_view.dart';
 
 class HomeLinux extends Home {
-  const HomeLinux({super.key, required this.title});
+  HomeLinux({super.key, required this.title});
 
   final String title;
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget buildView(
@@ -34,10 +35,10 @@ class HomeLinux extends Home {
               viewMode: SplitViewMode.Horizontal,
               children: [
                 TextEditorLinux(
-                  //text: viewModel.text,
+                  controller: _controller, 
                   onTextChanged: viewModel.onTextChanged,
                 ),
-                Markdown(data: viewModel.text),
+                Markdown(data: viewModel.previewText),
               ],
             ),
           ),
