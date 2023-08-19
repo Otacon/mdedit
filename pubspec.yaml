@@ -11,7 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  adwaita: ^1.0.1
+  adwaita:
+    path: ../adwaita
   adwaita_icons: ^0.2.1
 
   cupertino_icons: ^1.0.2 

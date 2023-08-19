@@ -10,6 +10,7 @@ import 'package:mdedit/home/home_view_model.dart';
 import 'package:mdedit/router/router_linux.dart';
 import 'package:mdedit/router/router_macos.dart';
 import 'package:mdedit/router/router_windows.dart';
+import 'package:mdedit/toolbar/toolbar_view_model.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
@@ -31,6 +32,7 @@ _registerManagers() {
 _registerViewModels() {
   final i = GetIt.I;
   i.registerFactory(() => HomeViewModel(i.get()));
+  i.registerFactory(() => ToolbarViewModel(i.get()));
 }
 
 _registerRouters() {
@@ -71,7 +73,7 @@ Future<App> _configureWindowsApp() async {
         ContentChanged() => event.document,
         FileLoaded() => event.document,
       };
-      final fileName = document.name;
+      final fileName = document.path?.split(Platform.pathSeparator).last ?? "Untitled";
       final String changedSymbol;
       if (document.hasContentChanged) {
         changedSymbol = "*";
