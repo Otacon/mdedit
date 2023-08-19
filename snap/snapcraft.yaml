@@ -16,7 +16,7 @@ slots:
 apps:
   mdedit:
     command: mdedit
-    extensions: [ gnome ]
+    extensions: [gnome]
     plugs:
       - network
     slots:
@@ -26,5 +26,4 @@ parts:
   mdedit:
     source: .
     plugin: flutter
-    flutter-channel: stable
     flutter-target: lib/main.dart
