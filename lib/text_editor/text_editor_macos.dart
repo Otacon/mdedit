@@ -1,16 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class TextEditorLinux extends StatelessWidget {
+
+import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:macos_ui/macos_ui.dart';
+
+class TextEditorMacos extends StatelessWidget {
   final void Function(String) onTextChanged;
 
-  const TextEditorLinux({super.key, required this.onTextChanged});
+  const TextEditorMacos({super.key, required this.onTextChanged});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: TextField(
+      child: MacosTextField.borderless(
         decoration: null,
         expands: true,
         keyboardType: TextInputType.multiline,
@@ -19,7 +22,7 @@ class TextEditorLinux extends StatelessWidget {
         onChanged: onTextChanged,
         textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.top,
-        style: GoogleFonts.robotoMono(),
+        style: GoogleFonts.spaceMono(),
       ),
     );
   }
