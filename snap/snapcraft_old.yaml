@@ -2,15 +2,25 @@ name: mdedit
 version: 0.1.0
 summary: Markdown editor
 description: Markdown editor
+
 confinement: strict
-base: core22
+base: core18
 grade: stable
-icon: snap/gui/app_icon.png
+
+slots:
+  dbus-mdedit:
+    interface: dbus
+    bus: session
+    name: org.cyanotic.md_edit
 
 apps:
   mdedit:
     command: mdedit
-    extensions: [gnome]
+    extensions: [flutter-stable]
+    plugs:
+      - network
+    slots:
+      - dbus-mdedit
 
 parts:
   mdedit:
