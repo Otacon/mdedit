@@ -48,7 +48,7 @@ _registerApps() {
   final i = GetIt.I;
   i.registerFactoryAsync(() async {
     if (Platform.isLinux) {
-      return AppLinux(router: i.get(instanceName: "router_linux"));
+      return _configureLinuxApp();
     } else if (Platform.isWindows) {
       return _configureWindowsApp();
     } else if (Platform.isMacOS) {
@@ -59,17 +59,30 @@ _registerApps() {
   });
 }
 
-Future<App> _configureMacosApp() async {
-  const config = MacosWindowUtilsConfig();
-  await config.apply();
+Future<App> _configureLinuxApp() async {
   final i = GetIt.I;
-  return AppMacOs(router: i.get(instanceName: "router_macos"));
+  _attachToWindowManager();
+  return AppLinux(router: i.get(instanceName: "router_linux"));
 }
 
 Future<App> _configureWindowsApp() async {
   final i = GetIt.I;
   SystemTheme.accentColor.load();
   await flutter_acrylic.Window.initialize();
+  _attachToWindowManager();
+  return AppWindows(router: i.get(instanceName: "router_windows"));
+}
+
+Future<App> _configureMacosApp() async {
+  const config = MacosWindowUtilsConfig();
+  await config.apply();
+  final i = GetIt.I;
+  _attachToWindowManager();
+  return AppMacOs(router: i.get(instanceName: "router_macos"));
+}
+
+_attachToWindowManager() async {
+  final i = GetIt.I;
   await WindowManager.instance.ensureInitialized();
   const name = "MDEdit";
   windowManager.waitUntilReadyToShow().then((_) async {
@@ -81,7 +94,8 @@ Future<App> _configureWindowsApp() async {
         ContentChanged() => event.document,
         FileLoaded() => event.document,
       };
-      final fileName = document.path?.split(Platform.pathSeparator).last ?? "Untitled";
+      final fileName =
+          document.path?.split(Platform.pathSeparator).last ?? "Untitled";
       final String changedSymbol;
       if (document.hasContentChanged) {
         changedSymbol = "*";
@@ -92,5 +106,4 @@ Future<App> _configureWindowsApp() async {
       await windowManager.setTitle(title);
     });
   });
-  return AppWindows(router: i.get(instanceName: "router_windows"));
 }
