@@ -17,7 +17,8 @@ class HomeMacos extends Home {
   late ToolbarViewModel toolbarViewModel;
 
   @override
-  onViewModelReady(HomeViewModel viewModel) {
+  onViewModelReady(BuildContext context, HomeViewModel viewModel) {
+    super.onViewModelReady(context, viewModel);
     toolbarViewModel = GetIt.I.get();
   }
 
