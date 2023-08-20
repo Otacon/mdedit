@@ -5,12 +5,14 @@ import 'package:mdedit/app/app.dart';
 
 class AppLinux extends App {
   final GoRouter router;
+  final String? title;
 
-  const AppLinux({super.key, required this.router});
+  const AppLinux({super.key, required this.router, this.title});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      title: title ?? "",
       routerConfig: router,
       theme: AdwaitaThemeData.light(),
       darkTheme: AdwaitaThemeData.dark(),
