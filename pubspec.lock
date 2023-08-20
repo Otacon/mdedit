@@ -15,7 +15,7 @@ packages:
       path: "."
       ref: main
       resolved-ref: "35bed4a5d2b7f39f2f0f6c4b929402ca64292aa3"
-      url: "git@github.com:gtk-flutter/adwaita.git"
+      url: "https://github.com/gtk-flutter/adwaita.git"
     source: git
     version: "1.0.1"
   adwaita_icons:
@@ -158,10 +158,10 @@ packages:
     dependency: "direct main"
     description:
       name: fluent_ui
-      sha256: "4a228a8d7dc93a1a8dc339cc99d439cf66ea5816285e76751ac5183f2ea10ced"
+      sha256: "0ec5ae618b42e6b9d0449d7519dec28c201809bc1955c5effb5a211dd77fa30e"
       url: "https://pub.dev"
     source: hosted
-    version: "4.7.2"
+    version: "4.7.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -242,10 +242,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: b3cadd2cd59a4103fd5f6bc572ca75111264698784e927aa471921c3477d5475
+      sha256: "2aa884667eeda3a1c461f31e72af1f77984ab0f29450d8fb12ec1f7bc53eea14"
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.0"
+    version: "10.1.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -510,6 +510,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  screen_retriever:
+    dependency: transitive
+    description:
+      name: screen_retriever
+      sha256: "4931f226ca158123ccd765325e9fbf360bfed0af9b460a10f960f9bb13d58323"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   scroll_pos:
     dependency: transitive
     description:
@@ -579,6 +587,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  system_theme:
+    dependency: "direct main"
+    description:
+      name: system_theme
+      sha256: "1f208db140a3d1e1eac2034b54920d95699c1534df576ced44b3312c5de3975f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
+  system_theme_web:
+    dependency: transitive
+    description:
+      name: system_theme_web
+      sha256: "7566f5a928f6d28d7a60c97bea8a851d1c6bc9b86a4df2366230a97458489219"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   term_glyph:
     dependency: transitive
     description:
@@ -635,6 +659,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.6"
+  window_manager:
+    dependency: "direct main"
+    description:
+      name: window_manager
+      sha256: "9eef00e393e7f9308309ce9a8b2398c9ee3ca78b50c96e8b4f9873945693ac88"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.5"
   xdg_directories:
     dependency: transitive
     description:

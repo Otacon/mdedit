@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mdedit/app/app.dart';
 import 'package:mdedit/dependencies.dart';
@@ -9,6 +9,6 @@ void main() async {
   await S.load(const Locale.fromSubtags(languageCode: 'en'));
   registerDependencies();
 
-  final App app = GetIt.I.get();
+  final App app = await GetIt.I.getAsync();
   runApp(app);
 }
