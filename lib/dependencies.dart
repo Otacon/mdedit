@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get_it/get_it.dart';
+import 'package:macos_ui/macos_ui.dart';
 import 'package:mdedit/app/app.dart';
 import 'package:mdedit/app/app_linux.dart';
 import 'package:mdedit/app/app_macos.dart';
@@ -51,11 +52,18 @@ _registerApps() {
     } else if (Platform.isWindows) {
       return _configureWindowsApp();
     } else if (Platform.isMacOS) {
-      return AppMacOs(router: i.get(instanceName: "router_macos"));
+      return _configureMacosApp();
     } else {
       throw Exception("Unsupported platform");
     }
   });
+}
+
+Future<App> _configureMacosApp() async {
+  const config = MacosWindowUtilsConfig();
+  await config.apply();
+  final i = GetIt.I;
+  return AppMacOs(router: i.get(instanceName: "router_macos"));
 }
 
 Future<App> _configureWindowsApp() async {
