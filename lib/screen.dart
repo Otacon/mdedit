@@ -10,7 +10,7 @@ abstract class Screen<VIEWMODEL extends ChangeNotifier>
     return GetIt.I.get();
   }
 
-  onViewModelReady(VIEWMODEL viewModel) {}
+  onViewModelReady(BuildContext context, VIEWMODEL viewModel) {}
 
   Widget buildView(
     BuildContext context,
@@ -22,7 +22,7 @@ abstract class Screen<VIEWMODEL extends ChangeNotifier>
   Widget build(BuildContext context) {
     return ViewModelBuilder<VIEWMODEL>.reactive(
       viewModelBuilder: createViewModel,
-      onViewModelReady: onViewModelReady,
+      onViewModelReady: (viewModel) { onViewModelReady(context, viewModel); },
       builder: buildView,
     );
   }

@@ -1,4 +1,5 @@
 
+import 'package:flutter/widgets.dart';
 import 'package:mdedit/home/home_view_model.dart';
 import 'package:mdedit/screen.dart';
 
@@ -8,7 +9,7 @@ abstract class Home extends Screen<HomeViewModel> {
   static const path = "/";
 
   @override
-  onViewModelReady(HomeViewModel viewModel) {
+  onViewModelReady(BuildContext context, HomeViewModel viewModel) {
     viewModel.onCreate();
   }
 

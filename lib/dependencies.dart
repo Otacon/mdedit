@@ -95,6 +95,7 @@ _attachToWindowManager() async {
   windowManager.waitUntilReadyToShow().then((_) async {
     await windowManager.setMinimumSize(const Size(500, 600));
     await windowManager.setTitle("$name - Untitled");
+    await windowManager.setPreventClose(true);
     await windowManager.show();
     i.get<DocumentManager>().docStream.stream.listen((event) async {
       final document = switch (event) {
