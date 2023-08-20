@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=MDEdit
+Comment=Markdown editor
+Exec=mdedit
+Icon=${SNAP}/meta/gui/app_icon.png
+Terminal=false
+Type=Application
+Categories=Utility;
