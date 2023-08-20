@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:mdedit/app/app.dart';
 import 'package:mdedit/app/app_linux.dart';
 import 'package:mdedit/app/app_macos.dart';
+import 'package:mdedit/app/app_windows.dart';
 import 'package:mdedit/document_manager/document_manager.dart';
 import 'package:mdedit/home/home_view_model.dart';
 import 'package:mdedit/router/router_linux.dart';
@@ -15,8 +17,6 @@ import 'package:mdedit/toolbar/toolbar_view_model.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
-
-import 'app/app_windows.dart';
 
 registerDependencies() {
   _registerManagers();
@@ -47,7 +47,9 @@ _registerRouters() {
 _registerApps() {
   final i = GetIt.I;
   i.registerFactoryAsync(() async {
-    if (Platform.isLinux) {
+    if (kIsWeb) {
+      return _configureWebApp();
+    } else if (Platform.isLinux) {
       return _configureLinuxApp();
     } else if (Platform.isWindows) {
       return _configureWindowsApp();
@@ -57,6 +59,11 @@ _registerApps() {
       throw Exception("Unsupported platform");
     }
   });
+}
+
+Future<App> _configureWebApp() async {
+  final i = GetIt.I;
+  return AppLinux(router: i.get(instanceName: "router_linux"));
 }
 
 Future<App> _configureLinuxApp() async {
