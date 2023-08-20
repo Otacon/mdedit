@@ -36,11 +36,11 @@ jobs:
       - name: Retrieve flutter dependencies
         run: flutter pub get
       - name: Build Web
-        run: flutter build web --release --source-maps --no-tree-shake-icons
+        run: flutter build web --base-href /mdedit/ --release --source-maps --no-tree-shake-icons
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './web/'
+          path: './build/web/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
