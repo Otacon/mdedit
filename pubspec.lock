@@ -12,9 +12,11 @@ packages:
   adwaita:
     dependency: "direct main"
     description:
-      path: "../adwaita"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "35bed4a5d2b7f39f2f0f6c4b929402ca64292aa3"
+      url: "git@github.com:gtk-flutter/adwaita.git"
+    source: git
     version: "1.0.1"
   adwaita_icons:
     dependency: "direct main"
