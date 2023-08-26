@@ -1,9 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:html' as html;
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:mdedit/document_manager/document.dart';
 
 class DocumentManager {
@@ -21,28 +17,13 @@ class DocumentManager {
   }
 
   saveAs(String path) async {
-    if(kIsWeb) {
-      final text = _document.content;
-      final bytes = utf8.encode(text);
-      final blob = html.Blob([bytes]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.document.createElement('a') as html.AnchorElement
-        ..href = url
-        ..style.display = 'none'
-        ..download = _document.path;
-      html.document.body?.children.add(anchor);
-      anchor.click();
-      html.document.body?.children.remove(anchor);
-      html.Url.revokeObjectUrl(url);
-    } else {
-      try {
-        final file = File(path);
-        await file.writeAsString(_document.content);
-        _document = Document(path, _document.content, false);
-        docStream.add(ContentChanged(_document));
-      } catch (e) {
-        return 0;
-      }
+    try {
+      final file = File(path);
+      await file.writeAsString(_document.content);
+      _document = Document(path, _document.content, false);
+      docStream.add(ContentChanged(_document));
+    } catch (e) {
+      return 0;
     }
   }
 

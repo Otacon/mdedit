@@ -21,7 +21,6 @@ class HomeWindows extends Home {
     viewModel.events.listen((event) async {
       switch (event) {
         case LoadContent():
-          print("Content loaded");
           _controller.text = event.text;
         case ShowExitDialog():
           final saveFile = await _showSaveFileDialog(context);

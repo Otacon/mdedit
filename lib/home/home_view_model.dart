@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:html' as html;
 import 'package:mdedit/document_manager/document_manager.dart';
 import 'package:mdedit/generated/l10n.dart';
 import 'package:window_manager/window_manager.dart';
@@ -9,6 +11,7 @@ import 'package:window_manager/window_manager.dart';
 class HomeViewModel with ChangeNotifier, WindowListener {
   final DocumentManager _documentManager;
   final _events = StreamController<HomeEvent>.broadcast();
+
   Stream<HomeEvent> get events => _events.stream.map((val) => val);
 
   var previewText = "";
@@ -66,7 +69,7 @@ class HomeViewModel with ChangeNotifier, WindowListener {
     );
     if (result != null) {
       final bytes = result.files.single.bytes;
-      if(bytes != null) {
+      if (bytes != null) {
         final content = String.fromCharCodes(bytes);
         final name = result.files.single.name;
         _documentManager.loadFrom(name, content);
@@ -77,7 +80,7 @@ class HomeViewModel with ChangeNotifier, WindowListener {
   onSaveClicked() async {
     final document = _documentManager.getDocument();
     final path = document.path;
-    if(path == null){
+    if (path == null) {
       onSaveAsClicked();
       return;
     }
@@ -85,14 +88,32 @@ class HomeViewModel with ChangeNotifier, WindowListener {
   }
 
   onSaveAsClicked() async {
-    final path = await FilePicker.platform.saveFile(
-      dialogTitle: S.current.file_picker_save_as_title,
-      type: FileType.any,
-      allowedExtensions: ["md"],
-      lockParentWindow: true,
-    );
-    if (path != null) {
-      _documentManager.saveAs(path);
+    if (kIsWeb) {
+      final document = _documentManager.getDocument();
+      final text = document.content;
+      var path = document.path;
+      path ??= "mdedit.md";
+      final bytes = utf8.encode(text);
+      final blob = html.Blob([bytes]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.document.createElement('a') as html.AnchorElement
+        ..href = url
+        ..style.display = 'none'
+        ..download = path;
+      html.document.body?.children.add(anchor);
+      anchor.click();
+      html.document.body?.children.remove(anchor);
+      html.Url.revokeObjectUrl(url);
+    } else {
+      final path = await FilePicker.platform.saveFile(
+        dialogTitle: S.current.file_picker_save_as_title,
+        type: FileType.any,
+        allowedExtensions: ["md"],
+        lockParentWindow: true,
+      );
+      if (path != null) {
+        _documentManager.saveAs(path);
+      }
     }
   }
 
