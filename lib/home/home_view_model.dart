@@ -1,15 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:html' as html;
 import 'package:mdedit/document_manager/document_manager.dart';
+import 'package:mdedit/file_saver/file_saver.dart';
 import 'package:mdedit/generated/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
 class HomeViewModel with ChangeNotifier, WindowListener {
   final DocumentManager _documentManager;
+  final FileSaver _fileSaver;
   final _events = StreamController<HomeEvent>.broadcast();
 
   Stream<HomeEvent> get events => _events.stream.map((val) => val);
@@ -17,7 +17,7 @@ class HomeViewModel with ChangeNotifier, WindowListener {
   var previewText = "";
   var isSaveEnabled = false;
 
-  HomeViewModel(this._documentManager) {
+  HomeViewModel(this._documentManager, this._fileSaver) {
     _documentManager.docStream.stream.forEach((event) {
       switch (event) {
         case FileLoaded():
@@ -88,33 +88,7 @@ class HomeViewModel with ChangeNotifier, WindowListener {
   }
 
   onSaveAsClicked() async {
-    if (kIsWeb) {
-      final document = _documentManager.getDocument();
-      final text = document.content;
-      var path = document.path;
-      path ??= "mdedit.md";
-      final bytes = utf8.encode(text);
-      final blob = html.Blob([bytes]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.document.createElement('a') as html.AnchorElement
-        ..href = url
-        ..style.display = 'none'
-        ..download = path;
-      html.document.body?.children.add(anchor);
-      anchor.click();
-      html.document.body?.children.remove(anchor);
-      html.Url.revokeObjectUrl(url);
-    } else {
-      final path = await FilePicker.platform.saveFile(
-        dialogTitle: S.current.file_picker_save_as_title,
-        type: FileType.any,
-        allowedExtensions: ["md"],
-        lockParentWindow: true,
-      );
-      if (path != null) {
-        _documentManager.saveAs(path);
-      }
-    }
+    _fileSaver.saveFile(_documentManager);
   }
 
   onExitClicked() async {

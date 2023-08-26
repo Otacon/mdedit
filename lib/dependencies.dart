@@ -18,6 +18,9 @@ import 'package:mdedit/router/router_windows.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
+import 'package:mdedit/file_saver/file_saver_stub.dart'
+if (dart.library.io) 'package:mdedit/file_saver/file_saver_desktop.dart'
+if (dart.library.html) 'package:mdedit/file_saver/file_saver_web.dart';
 
 registerDependencies() {
   _registerManagers();
@@ -29,11 +32,12 @@ registerDependencies() {
 _registerManagers() {
   final i = GetIt.I;
   i.registerSingleton(DocumentManager());
+  i.registerSingleton(getFileSaver());
 }
 
 _registerViewModels() {
   final i = GetIt.I;
-  i.registerFactory(() => HomeViewModel(i.get()));
+  i.registerFactory(() => HomeViewModel(i.get(), i.get()));
 }
 
 _registerRouters() {
