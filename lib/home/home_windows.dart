@@ -1,9 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:mdedit/generated/l10n.dart';
 import 'package:mdedit/home/home.dart';
 import 'package:mdedit/home/home_view_model.dart';
 import 'package:mdedit/text_editor/text_editor_windows.dart';
-import 'package:mdedit/toolbar/toolbar_windows.dart';
 import 'package:split_view/split_view.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -33,25 +33,54 @@ class HomeWindows extends Home {
   Widget buildView(
       BuildContext context, HomeViewModel viewModel, Widget? child) {
     return ScaffoldPage(
+      header: _toolbar(viewModel),
       padding: EdgeInsets.zero,
-      content: Acrylic(
-        child: Column(
+      content: SplitView(
+        gripSize: 5.0,
+        viewMode: SplitViewMode.Horizontal,
+        children: [
+          Mica(
+            child: TextEditorWindows(
+              onTextChanged: viewModel.onTextChanged,
+              controller: _controller,
+            ),
+          ),
+          Markdown(
+            data: viewModel.previewText,
+            selectable: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _toolbar(HomeViewModel viewModel) {
+    return Mica(
+      child: CommandBarCard(
+        child: CommandBar(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const ToolbarWindows(),
-            Expanded(
-              child: SplitView(
-                gripSize: 5.0,
-                viewMode: SplitViewMode.Horizontal,
-                children: [
-                  TextEditorWindows(
-                    onTextChanged: viewModel.onTextChanged,
-                    controller: _controller,
-                  ),
-                  Markdown(data: viewModel.previewText),
-                ],
-              ),
+          overflowBehavior: CommandBarOverflowBehavior.noWrap,
+          primaryItems: [
+            CommandBarButton(
+              label: Text(S.current.menu_file_new),
+              icon: const Icon(FluentIcons.add),
+              onPressed: viewModel.onNewClicked,
+            ),
+            CommandBarButton(
+              label: Text(S.current.menu_file_open),
+              icon: const Icon(FluentIcons.open_file),
+              onPressed: viewModel.onOpenClicked,
+            ),
+            CommandBarButton(
+              label: Text(S.current.menu_file_save),
+              icon: const Icon(FluentIcons.save),
+              onPressed:
+                  viewModel.isSaveEnabled ? viewModel.onSaveClicked : null,
+            ),
+            CommandBarButton(
+              label: Text(S.current.menu_file_save_as),
+              icon: const Icon(FluentIcons.save_as),
+              onPressed: viewModel.onSaveAsClicked,
             ),
           ],
         ),

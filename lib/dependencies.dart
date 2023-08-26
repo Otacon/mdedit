@@ -7,16 +7,20 @@ import 'package:macos_ui/macos_ui.dart';
 import 'package:mdedit/app/app.dart';
 import 'package:mdedit/app/app_linux.dart';
 import 'package:mdedit/app/app_macos.dart';
+import 'package:mdedit/app/app_web.dart';
 import 'package:mdedit/app/app_windows.dart';
 import 'package:mdedit/document_manager/document_manager.dart';
 import 'package:mdedit/home/home_view_model.dart';
 import 'package:mdedit/router/router_linux.dart';
 import 'package:mdedit/router/router_macos.dart';
+import 'package:mdedit/router/router_web.dart';
 import 'package:mdedit/router/router_windows.dart';
-import 'package:mdedit/toolbar/toolbar_view_model.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
+import 'package:mdedit/file_saver/file_saver_stub.dart'
+if (dart.library.io) 'package:mdedit/file_saver/file_saver_desktop.dart'
+if (dart.library.html) 'package:mdedit/file_saver/file_saver_web.dart';
 
 registerDependencies() {
   _registerManagers();
@@ -28,12 +32,12 @@ registerDependencies() {
 _registerManagers() {
   final i = GetIt.I;
   i.registerSingleton(DocumentManager());
+  i.registerSingleton(getFileSaver());
 }
 
 _registerViewModels() {
   final i = GetIt.I;
-  i.registerFactory(() => HomeViewModel(i.get()));
-  i.registerFactory(() => ToolbarViewModel(i.get()));
+  i.registerFactory(() => HomeViewModel(i.get(), i.get()));
 }
 
 _registerRouters() {
@@ -42,6 +46,7 @@ _registerRouters() {
   i.registerFactory(() => routerLinux, instanceName: "router_linux");
   i.registerFactory(() => routerWindows, instanceName: "router_windows");
   i.registerFactory(() => routerMacos, instanceName: "router_macos");
+  i.registerFactory(() => routerWeb, instanceName: "router_web");
 }
 
 _registerApps() {
@@ -63,7 +68,7 @@ _registerApps() {
 
 Future<App> _configureWebApp() async {
   final i = GetIt.I;
-  return AppLinux(router: i.get(instanceName: "router_linux"));
+  return AppWeb(router: i.get(instanceName: "router_web"));
 }
 
 Future<App> _configureLinuxApp() async {
@@ -76,6 +81,9 @@ Future<App> _configureWindowsApp() async {
   final i = GetIt.I;
   SystemTheme.accentColor.load();
   await flutter_acrylic.Window.initialize();
+  await flutter_acrylic.Window.setEffect(
+    effect: flutter_acrylic.WindowEffect.acrylic,
+  );
   _attachToWindowManager();
   return AppWindows(router: i.get(instanceName: "router_windows"));
 }

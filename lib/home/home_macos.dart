@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:get_it/get_it.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:mdedit/generated/l10n.dart';
 import 'package:mdedit/home/home.dart';
 import 'package:mdedit/home/home_view_model.dart';
 import 'package:mdedit/text_editor/text_editor_macos.dart';
-import 'package:mdedit/toolbar/toolbar_macos.dart';
-import 'package:mdedit/toolbar/toolbar_view_model.dart';
 import 'package:split_view/split_view.dart';
 
 class HomeMacos extends Home {
@@ -14,12 +12,11 @@ class HomeMacos extends Home {
 
   final String title;
   final TextEditingController _controller = TextEditingController();
-  late ToolbarViewModel toolbarViewModel;
 
   @override
   onViewModelReady(BuildContext context, HomeViewModel viewModel) {
     super.onViewModelReady(context, viewModel);
-    toolbarViewModel = GetIt.I.get();
+    viewModel.onCreate();
   }
 
   @override
@@ -27,13 +24,7 @@ class HomeMacos extends Home {
       BuildContext context, HomeViewModel viewModel, Widget? child) {
     return MacosWindow(
       child: MacosScaffold(
-        toolBar: ToolbarMacos(
-          onNewClicked: toolbarViewModel.onNewClicked,
-          onOpenClicked: toolbarViewModel.onOpenClicked,
-          onSaveClicked: toolbarViewModel.onSaveClicked,
-          onSaveAsClicked: toolbarViewModel.onSaveAsClicked,
-          isSaveEnabled: toolbarViewModel.isSaveEnabled,
-        ),
+        toolBar: _toolBar(viewModel),
         children: [
           ContentArea(
             builder: (_, __) {
@@ -45,13 +36,47 @@ class HomeMacos extends Home {
                     controller: _controller,
                     onTextChanged: viewModel.onTextChanged,
                   ),
-                  Markdown(data: viewModel.previewText),
+                  Markdown(
+                    data: viewModel.previewText,
+                    selectable: true,
+                  ),
                 ],
               );
             },
           )
         ],
       ),
+    );
+  }
+
+  ToolBar _toolBar(HomeViewModel viewModel) {
+    return ToolBar(
+      actions: [
+        ToolBarIconButton(
+          icon: const MacosIcon(CupertinoIcons.add),
+          onPressed: viewModel.onNewClicked,
+          label: S.current.menu_file_new,
+          showLabel: true,
+        ),
+        ToolBarIconButton(
+          icon: const MacosIcon(CupertinoIcons.archivebox),
+          onPressed: viewModel.onOpenClicked,
+          label: S.current.menu_file_open,
+          showLabel: true,
+        ),
+        ToolBarIconButton(
+          icon: const MacosIcon(CupertinoIcons.floppy_disk),
+          onPressed: viewModel.isSaveEnabled ? viewModel.onSaveAsClicked : null,
+          label: S.current.menu_file_save,
+          showLabel: true,
+        ),
+        ToolBarIconButton(
+          icon: const MacosIcon(CupertinoIcons.floppy_disk),
+          onPressed: viewModel.onSaveAsClicked,
+          label: S.current.menu_file_save_as,
+          showLabel: true,
+        ),
+      ],
     );
   }
 }

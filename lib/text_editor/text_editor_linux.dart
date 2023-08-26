@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TextEditorLinux extends StatelessWidget {
-  final void Function(String) onTextChanged;
+  final void Function(String)? onTextChanged;
   final TextEditingController? controller;
 
-  const TextEditorLinux({super.key, required this.onTextChanged, this.controller});
+  const TextEditorLinux({super.key, this.onTextChanged, this.controller});
 
   @override
   Widget build(BuildContext context) {

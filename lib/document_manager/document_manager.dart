@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:mdedit/document_manager/document.dart';
 
 class DocumentManager {
@@ -11,16 +10,10 @@ class DocumentManager {
 
   DocumentManager();
 
-  loadFrom(String fullPath) async {
-    try {
-      final file = File(fullPath);
-      final content = await file.readAsString();
-      _document = Document(fullPath, content, false);
-      _originalDocument = _document;
-      docStream.add(FileLoaded(_document));
-    } catch (e) {
-      return 0;
-    }
+  loadFrom(String name, content) async {
+    _document = Document(name, content, false);
+    _originalDocument = _document;
+    docStream.add(FileLoaded(_document));
   }
 
   saveAs(String path) async {
@@ -42,14 +35,7 @@ class DocumentManager {
 
   setContent(String content) async {
     bool isContentChanged = _originalDocument?.content != content;
-    _document =
-        Document(_document.path, content, isContentChanged);
-    _notifyObservers();
-  }
-
-  //TODO probably URI is better
-  setFile(String path) async {
-    _document = Document(path, _document.content, false);
+    _document = Document(_document.path, content, isContentChanged);
     _notifyObservers();
   }
 
@@ -66,10 +52,12 @@ sealed class DocumentEvent {}
 
 class FileLoaded extends DocumentEvent {
   final Document document;
+
   FileLoaded(this.document);
 }
 
 class ContentChanged extends DocumentEvent {
   final Document document;
+
   ContentChanged(this.document);
 }
