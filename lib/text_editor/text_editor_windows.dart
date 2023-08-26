@@ -10,20 +10,17 @@ class TextEditorWindows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextBox(
-        controller: controller,
-        decoration: null,
-        expands: true,
-        keyboardType: TextInputType.multiline,
-        maxLines: null,
-        minLines: null,
-        onChanged: onTextChanged,
-        textAlign: TextAlign.start,
-        textAlignVertical: TextAlignVertical.top,
-        style: GoogleFonts.notoSansMono(),
-      ),
+    return TextBox(
+      controller: controller,
+      decoration: null,
+      expands: true,
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
+      minLines: null,
+      onChanged: onTextChanged,
+      textAlign: TextAlign.start,
+      textAlignVertical: TextAlignVertical.top,
+      style: GoogleFonts.notoSansMono(),
     );
   }
 }

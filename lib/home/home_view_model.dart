@@ -8,22 +8,26 @@ import 'package:window_manager/window_manager.dart';
 
 class HomeViewModel with ChangeNotifier, WindowListener {
   final DocumentManager _documentManager;
-  String previewText = "";
   final _events = StreamController<HomeEvent>.broadcast();
   Stream<HomeEvent> get events => _events.stream.map((val) => val);
+
+  var previewText = "";
+  var isSaveEnabled = false;
 
   HomeViewModel(this._documentManager) {
     _documentManager.docStream.stream.forEach((event) {
       switch (event) {
         case FileLoaded():
-          final newContent = event.document.content;
-          _events.add(LoadContent(newContent));
-          previewText = newContent;
-          notifyListeners();
+          final document = event.document;
+          isSaveEnabled = document.hasContentChanged;
+          previewText = document.content;
+          _events.add(LoadContent(document.content));
         case ContentChanged():
-          previewText = event.document.content;
-          notifyListeners();
+          final document = event.document;
+          previewText = document.content;
+          isSaveEnabled = document.hasContentChanged;
       }
+      notifyListeners();
     });
   }
 
@@ -41,6 +45,59 @@ class HomeViewModel with ChangeNotifier, WindowListener {
     } else {
       exit(0);
     }
+  }
+
+  onNewClicked() async {
+    FilePicker.platform.saveFile(
+      dialogTitle: S.current.file_picker_new_title,
+      type: FileType.custom,
+      allowedExtensions: ["md"],
+      lockParentWindow: true,
+    );
+  }
+
+  onOpenClicked() async {
+    final result = await FilePicker.platform.pickFiles(
+      dialogTitle: S.current.file_picker_open_title,
+      type: FileType.custom,
+      allowedExtensions: ["md"],
+      withData: true,
+      lockParentWindow: true,
+    );
+    if (result != null) {
+      final bytes = result.files.single.bytes;
+      if(bytes != null) {
+        final content = String.fromCharCodes(bytes);
+        final name = result.files.single.name;
+        _documentManager.loadFrom(name, content);
+      }
+    }
+  }
+
+  onSaveClicked() async {
+    final document = _documentManager.getDocument();
+    final path = document.path;
+    if(path == null){
+      onSaveAsClicked();
+      return;
+    }
+    _documentManager.saveAs(path);
+  }
+
+  onSaveAsClicked() async {
+    final path = await FilePicker.platform.saveFile(
+      dialogTitle: S.current.file_picker_save_as_title,
+      type: FileType.any,
+      allowedExtensions: ["md"],
+      lockParentWindow: true,
+    );
+    if (path != null) {
+      _documentManager.saveAs(path);
+    }
+  }
+
+  onExitClicked() async {
+    exit(0);
   }
 
   void onSaveFileDialogResult(bool? saveFile) async {

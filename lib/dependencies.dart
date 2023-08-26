@@ -13,7 +13,6 @@ import 'package:mdedit/home/home_view_model.dart';
 import 'package:mdedit/router/router_linux.dart';
 import 'package:mdedit/router/router_macos.dart';
 import 'package:mdedit/router/router_windows.dart';
-import 'package:mdedit/toolbar/toolbar_view_model.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
@@ -33,7 +32,6 @@ _registerManagers() {
 _registerViewModels() {
   final i = GetIt.I;
   i.registerFactory(() => HomeViewModel(i.get()));
-  i.registerFactory(() => ToolbarViewModel(i.get()));
 }
 
 _registerRouters() {
@@ -76,6 +74,9 @@ Future<App> _configureWindowsApp() async {
   final i = GetIt.I;
   SystemTheme.accentColor.load();
   await flutter_acrylic.Window.initialize();
+  await flutter_acrylic.Window.setEffect(
+    effect: flutter_acrylic.WindowEffect.acrylic,
+  );
   _attachToWindowManager();
   return AppWindows(router: i.get(instanceName: "router_windows"));
 }
