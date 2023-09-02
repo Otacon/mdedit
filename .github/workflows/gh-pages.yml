@@ -18,6 +18,9 @@ concurrency:
 
 jobs:
   deploy:
+    defaults:
+      run:
+        working-directory: mdedit_web
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -6,62 +6,95 @@ on:
       - main
 
 jobs:
- build-linux:
-   runs-on: ubuntu-20.04
-   steps:
-     - uses: actions/checkout@v3
-     - uses: whywaita/setup-lxd@v1
-       with:
-         lxd_version: latest/stable
-     - name: Install Snapcraft
-       uses: samuelmeuli/action-snapcraft@v2
-     - name: Create snap app
-       run: snapcraft --use-lxd
-     - uses: actions/upload-artifact@v3
-       with:
-         name: linux
-         path: mdedit*.snap
- build-windows:
-   runs-on: windows-latest
-   steps:
-     - uses: actions/checkout@v3
-     - uses: subosito/flutter-action@v2
-       with:
-         flutter-version: '3.10.6'
-         channel: 'stable'
-     - run: flutter config --enable-windows-desktop
-     - run: flutter pub get
-     - run: flutter build windows --release
-     - uses: actions/upload-artifact@v3
-       with:
-         name: windows
-         path: build/windows/runner/Release/*
- build-macos:
+  build-linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup LXD
+        uses: whywaita/setup-lxd@v1
+        with:
+          lxd_version: latest/stable
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.2'
+          channel: 'stable'
+      - name: Generate translations
+        run: dart run intl_utils:generate
+        working-directory: mdedit_api
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v2
+      - name: Create Snap
+        run: snapcraft --use-lxd
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux
+          path: mdedit*.snap
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.2'
+          channel: 'stable'
+      - name: Generate translations
+        run: dart run intl_utils:generate
+        working-directory: mdedit_api
+      - name: Build windows app
+        run: flutter build windows --release
+        working-directory: mdedit_windows
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows
+          path: mdedit_windows/build/windows/runner/Release/*
+  build-macos:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.10.6'
-        channel: 'stable'
-        architecture: x64
-    - run: flutter pub get
-    - run: flutter build macos --release
-    - uses: actions/upload-artifact@v3
-      with:
-         name: macos
-         path: build/macos/Build/Products/Release/*.app
- build-web:
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v3
-     - uses: subosito/flutter-action@v2
-       with:
-         flutter-version: '3.10.6'
-         channel: 'stable'
-     - run: flutter pub get
-     - run: flutter build web
-     - uses: actions/upload-artifact@v3
-       with:
-         name: web
-         path: build/web/*
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.2'
+          channel: 'stable'
+          architecture: x64
+      - name: Generate translations
+        run: dart run intl_utils:generate
+        working-directory: mdedit_api
+      - name: Build macos app
+        run: flutter build macos --release
+        working-directory: mdedit_macos
+      - name: Tar executable
+        run: tar -cvf mdedit.tar -C mdedit_macos/build/macos/Build/Products/Release/ mdedit_macos.app
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos
+          path: mdedit.tar
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.2'
+          channel: 'stable'
+      - name: Generate translations
+        run: dart run intl_utils:generate
+        working-directory: mdedit_api
+      - name: Build web app
+        run: flutter build web --release
+        working-directory: mdedit_web
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: web
+          path: mdedit_web/build/web/*
