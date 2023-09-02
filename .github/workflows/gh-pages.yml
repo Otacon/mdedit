@@ -18,30 +18,30 @@ concurrency:
 
 jobs:
   deploy:
-    defaults:
-      run:
-        working-directory: mdedit_web
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
         with:
-          channel: stable
-      - name: Retrieve flutter dependencies
-        run: flutter pub get
-      - name: Build Web
+          flutter-version: '3.13.2'
+          channel: 'stable'
+      - name: Generate translations
+        run: dart run intl_utils:generate
+        working-directory: mdedit_api
+      - name: Build web app
         run: flutter build web --base-href /mdedit/ --release --source-maps --no-tree-shake-icons
+        working-directory: mdedit_web
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './build/web/'
+          path: './mdedit_web/build/web/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
