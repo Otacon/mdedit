@@ -71,7 +71,7 @@ jobs:
         run: flutter build macos --release
         working-directory: mdedit_macos
       - name: Tar executable
-        run: tar -cvf mdedit.tar -C mdedit_macos/build/macos/Build/Products/Release/ *.app
+        run: tar -cvf mdedit.tar -C mdedit_macos/build/macos/Build/Products/Release/ mdedit_macos.app
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
