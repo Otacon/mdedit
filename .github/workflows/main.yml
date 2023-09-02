@@ -16,6 +16,10 @@ jobs:
       - uses: whywaita/setup-lxd@v1
         with:
           lxd_version: latest/stable
+      - uses: subosito/flutter-action@v2
+        with:
+           flutter-version: '3.13.2'
+           channel: 'stable'
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
       - run: dart pub run intl_utils:generate
@@ -44,7 +48,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: windows
-          path: build/windows/runner/Release/*
+          path: mdedit_windows/build/windows/runner/Release/*
   build-macos:
     defaults:
       run:
@@ -64,7 +68,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: macos
-          path: build/macos/Build/Products/Release/*.app
+          path: mdedit_macos/build/macos/Build/Products/Release/*.app
   build-web:
     runs-on: ubuntu-latest
     steps:
