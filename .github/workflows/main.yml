@@ -68,6 +68,8 @@ jobs:
        with:
          flutter-version: '3.13.2'
          channel: 'stable'
+     - run: flutter gen-l10n
+       working-directory: mdedit_api
      - run: flutter pub get
        working-directory: mdedit_web
      - run: flutter build web --release
