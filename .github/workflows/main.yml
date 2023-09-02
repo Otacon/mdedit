@@ -71,7 +71,7 @@ jobs:
           name: macos
           path: build/macos/Build/Products/Release/*.app
   build-web:
-    needs: generate_translations
+    needs: generate-translations
     runs-on: ubuntu-latest
     steps:
       - run: flutter pub get
