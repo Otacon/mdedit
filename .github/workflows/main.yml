@@ -62,9 +62,6 @@ jobs:
          path: build/macos/Build/Products/Release/*.app
  build-web:
    runs-on: ubuntu-latest
-   defaults:
-     run:
-       working-directory: mdedit_web
    steps:
      - uses: actions/checkout@v3
      - uses: subosito/flutter-action@v2
@@ -72,8 +69,10 @@ jobs:
          flutter-version: '3.10.6'
          channel: 'stable'
      - run: flutter pub get
+       working-directory: mdedit_web
      - run: flutter build web --release
+       working-directory: mdedit_web
      - uses: actions/upload-artifact@v3
        with:
          name: web
-         path: build/web/*
+         path: mdedit_web/build/web/*
