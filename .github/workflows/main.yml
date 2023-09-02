@@ -17,10 +17,10 @@ jobs:
         with:
            flutter-version: '3.13.2'
            channel: 'stable'
-      - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@v2
       - run: dart pub run intl_utils:generate
         working-directory: mdedit_api
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v2
       - name: Create snap app
         run: snapcraft --use-lxd
       - uses: actions/upload-artifact@v3
