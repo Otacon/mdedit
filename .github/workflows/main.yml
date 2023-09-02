@@ -56,10 +56,12 @@ jobs:
         working-directory: mdedit_api
       - run: flutter build macos --release
         working-directory: mdedit_macos
+      - name: Tar files
+        run: tar -cvf mdedit.tar mdedit_macos/build/macos/Build/Products/Release/*.app
       - uses: actions/upload-artifact@v3
         with:
           name: macos
-          path: mdedit_macos/build/macos/Build/Products/Release/*.app
+          path: mdedit.tar
   build-web:
     runs-on: ubuntu-latest
     steps:
