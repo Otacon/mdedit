@@ -18,9 +18,10 @@ jobs:
           lxd_version: latest/stable
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
+      - run: dart pub run intl_utils:generate
+        working-directory: mdedit_api
       - name: Create snap app
         run: snapcraft --use-lxd
-        working-directory: mdedit_linux
       - uses: actions/upload-artifact@v3
         with:
           name: linux
