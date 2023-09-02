@@ -6,16 +6,6 @@ on:
       - main
 
 jobs:
-  generate-translations:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.13.2'
-          channel: 'stable'
-      - run: dart pub run intl_utils:generate
-        working-directory: mdedit_api
   build-linux:
     defaults:
       run:
@@ -23,13 +13,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - uses: whywaita/setup-lxd@v1
-        with:
-          lxd_version: latest/stable
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
       - name: Create snap app
         run: snapcraft --use-lxd
+        working-directory: mdedit_linux
       - uses: actions/upload-artifact@v3
         with:
           name: linux
@@ -45,9 +33,10 @@ jobs:
         with:
           flutter-version: '3.13.2'
           channel: 'stable'
-      - run: flutter config --enable-windows-desktop
-      - run: flutter pub get
+      - run: dart pub run intl_utils:generate
+        working-directory: mdedit_api
       - run: flutter build windows --release
+        working-directory: mdedit_windows
       - uses: actions/upload-artifact@v3
         with:
           name: windows
@@ -64,18 +53,24 @@ jobs:
           flutter-version: '3.13.2'
           channel: 'stable'
           architecture: x64
-      - run: flutter pub get
+      - run: dart pub run intl_utils:generate
+        working-directory: mdedit_api
       - run: flutter build macos --release
+        working-directory: mdedit_macos
       - uses: actions/upload-artifact@v3
         with:
           name: macos
           path: build/macos/Build/Products/Release/*.app
   build-web:
-    needs: generate-translations
     runs-on: ubuntu-latest
     steps:
-      - run: flutter pub get
-        working-directory: mdedit_web
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.2'
+          channel: 'stable'
+      - run: dart pub run intl_utils:generate
+        working-directory: mdedit_api
       - run: flutter build web --release
         working-directory: mdedit_web
       - uses: actions/upload-artifact@v3
