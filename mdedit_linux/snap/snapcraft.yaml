@@ -14,6 +14,6 @@ apps:
 
 parts:
   mdedit:
-    source: mdedit_linux
+    source: .
     plugin: flutter
     flutter-target: lib/main.dart
