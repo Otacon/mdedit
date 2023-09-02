@@ -22,6 +22,9 @@ dependencies:
   split_view: ^3.2.1
   stacked: ^3.2.7
 
+flutter:
+  uses-material-design: true
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
