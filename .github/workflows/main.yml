@@ -7,9 +7,6 @@ on:
 
 jobs:
   build-linux:
-    defaults:
-      run:
-        working-directory: mdedit_linux
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -31,9 +28,6 @@ jobs:
           name: linux
           path: mdedit*.snap
   build-windows:
-    defaults:
-      run:
-        working-directory: mdedit_windows
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -50,9 +44,6 @@ jobs:
           name: windows
           path: mdedit_windows/build/windows/runner/Release/*
   build-macos:
-    defaults:
-      run:
-        working-directory: mdedit_macos
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
