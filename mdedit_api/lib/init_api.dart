@@ -17,6 +17,12 @@ initApi() async {
   await _attachToWindowManager();
 }
 
+initApiWeb() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await S.load(const Locale.fromSubtags(languageCode: 'en'));
+  _registerDependencies();
+}
+
 _registerDependencies() {
   _registerManagers();
   _registerViewModels();
