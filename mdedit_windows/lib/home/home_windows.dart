@@ -24,6 +24,7 @@ class HomeWindows extends StatelessWidget {
             case LoadContent():
               _controller.text = event.text;
             case ShowExitDialog():
+              _showSaveFileDialog(context);
           }
         });
       },
