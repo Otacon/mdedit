@@ -424,7 +424,7 @@ packages:
       path: mdedit_windows
       relative: true
     source: path
-    version: "1.0.0+1"
+    version: "0.0.1"
   meta:
     dependency: transitive
     description:
